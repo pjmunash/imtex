@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image to Text OCR - NG ID Extractor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/tesseract.js@5.0.4/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="titles">
+        <h1>Image to Text OCR</h1>
+        <p>NG + 7 digit ID extractor with dual OCR engines</p>
+      </div>
+      <div class="actions">
+        <label class="file-btn">
+          <input id="file-input" type="file" accept="image/*" multiple />
+          <span>Select Images</span>
+        </label>
+        <button id="clear-btn" class="ghost">Clear</button>
+      </div>
+    </header>
+
+    <section class="controls">
+      <div class="control-group">
+        <h3>OCR Engine</h3>
+        <label><input type="radio" name="engine" value="dual" checked /> Dual (OCR.Space + Tesseract)</label>
+        <label><input type="radio" name="engine" value="ocrspace" /> OCR.Space</label>
+        <label><input type="radio" name="engine" value="tesseract" /> Tesseract</label>
+      </div>
+      <div class="control-group">
+        <h3>OCR.Space Status</h3>
+        <div class="api-row">
+          <small>Using built-in API key</small>
+          <span id="api-status" class="badge subtle">Ready</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <h3>Strip Scanning</h3>
+        <label class="checkbox-label">
+          <input type="checkbox" id="strip-enabled" checked />
+          Enable strip-based scanning
+        </label>
+        <div style="margin-top: 8px;">
+          <label style="font-size: 0.9em; color: #94a3b8;">
+            Strip height (cm):
+            <input type="number" id="strip-height" value="0.5" min="0.1" max="5" step="0.1" 
+                   style="width: 60px; margin-left: 5px; padding: 4px; background: #0f3460; color: white; border: 1px solid #1e293b; border-radius: 4px;" />
+          </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <h3>Filtering</h3>
+        <label><input type="checkbox" id="strict-mode" /> Strict consensus (3+ hits per image)</label>
+        <small>Use when you want fewer false positives; may hide faint IDs.</small>
+      </div>
+    </section>
+
+    <section class="dropzone" id="dropzone">
+      <p>Drag & drop images here or use Select Images</p>
+      <p class="hint">Supports PNG, JPG, JPEG, BMP, GIF, TIFF</p>
+    </section>
+
+    <section class="status" id="status">Ready</section>
+
+    <section class="results">
+      <div class="results-header">
+        <h3>Validated IDs (all images)</h3>
+        <div class="result-actions">
+          <button id="copy-ids" class="primary" disabled>Copy IDs</button>
+        </div>
+      </div>
+      <pre id="ids-output" class="output"></pre>
+    </section>
+
+    <section class="results" id="image-results">
+      <div class="results-header">
+        <h3>Per-Image Results</h3>
+        <div class="result-actions">
+          <button id="extract-btn" class="primary" disabled>Extract Text</button>
+        </div>
+      </div>
+      <div id="cards" class="cards"></div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
